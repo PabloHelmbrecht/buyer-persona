@@ -28,7 +28,7 @@ const categories: {
   {
     title: 'Customers',
     metric: '1,072',
-    metricPrev: '856'
+    metricPrev: '86'
   }
 ];
 
