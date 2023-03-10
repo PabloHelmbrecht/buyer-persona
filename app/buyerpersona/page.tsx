@@ -1,3 +1,6 @@
+'use client';
+
+import React, { useState } from 'react';
 import {
   Card,
   Metric,
@@ -33,6 +36,24 @@ const categories: {
 ];
 
 export default function PlaygroundPage() {
+  const [loading, isLoading] = useState(false);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    isLoading(true);
+
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        var files = e.target.files;
+        console.log(files);
+        var filesArr = Array.prototype.slice.call(files);
+        console.log(filesArr);
+        isLoading(false);
+      }, '5000');
+    });
+
+    promise;
+  };
+
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
       <Flex justifyContent="justify-center" marginTop="mt-12">
@@ -44,29 +65,20 @@ export default function PlaygroundPage() {
         </Text>
       </Flex>
       <Flex justifyContent="justify-center" marginTop="mt-8">
-        <button className="tremor-base input-elem tr-flex-shrink-0 gap-2 tr-inline-flex tr-items-center tr-group focus:tr-outline-none focus:tr-ring-2 focus:tr-ring-offset-2 focus:tr-ring-transparent tr-font-medium tr-rounded-md tr-border tr-shadow-sm tr-pl-4 tr-pr-4 tr-pt-2.5 tr-pb-2.5 tr-text-lg tr-text-white tr-bg-blue-500 tr-border-transparent focus:tr-ring-blue-400 tr-text-white hover:tr-bg-blue-600 hover:tr-border-blue-600">
+        <label
+          for="file-upload"
+          className="tremor-base input-elem tr-flex-shrink-0 gap-2 tr-inline-flex tr-items-center tr-group focus:tr-outline-none focus:tr-ring-2 focus:tr-ring-offset-2 focus:tr-ring-transparent tr-font-medium tr-rounded-md tr-border tr-shadow-sm tr-pl-4 tr-pr-4 tr-pt-2.5 tr-pb-2.5 tr-text-lg tr-text-white tr-bg-blue-500 tr-border-transparent focus:tr-ring-blue-400 tr-text-white hover:tr-bg-blue-600 hover:tr-border-blue-600"
+        >
           <ArrowUpOnSquareIcon className="h-6 w-6" />
-          <span> Subir archivo .CSV</span>
-        </button>
+          <span> {loading ? 'Subiendo a' : 'Subir archivo .CSV'}</span>
+          <input
+            id="file-upload"
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+            type="file"
+          />
+        </label>
       </Flex>
-      <ColGrid numColsSm={2} numColsLg={3} gapX="gap-x-6" gapY="gap-y-6">
-        {categories.map((item) => (
-          <Card key={item.title}>
-            <Flex alignItems="items-start">
-              <Text>{item.title}</Text>
-            </Flex>
-            <Flex
-              justifyContent="justify-start"
-              alignItems="items-baseline"
-              spaceX="space-x-3"
-              truncate={true}
-            >
-              <Metric>{item.metric}</Metric>
-              <Text truncate={true}>from {item.metricPrev}</Text>
-            </Flex>
-          </Card>
-        ))}
-      </ColGrid>
     </main>
   );
 }
