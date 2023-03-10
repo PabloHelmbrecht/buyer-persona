@@ -2,10 +2,12 @@
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 
 export default function Search({ disabled }: { disabled?: boolean }) {
   const { replace } = useRouter();
   const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
 
   function handleSearch(term: string) {
     const params = new URLSearchParams(window.location.search);
@@ -14,6 +16,10 @@ export default function Search({ disabled }: { disabled?: boolean }) {
     } else {
       params.delete('q');
     }
+
+    startTransition(() => {
+      replace(`${pathname}?${params.toString()}`);
+    });
   }
 
   return (
@@ -43,7 +49,7 @@ export default function Search({ disabled }: { disabled?: boolean }) {
         />
       </div>
 
-      {false && (
+      {isPending && (
         <div className="absolute right-0 top-0 bottom-0 flex items-center justify-center">
           <svg
             className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-700"
