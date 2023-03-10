@@ -38,7 +38,7 @@ const categories: {
 export default function PlaygroundPage() {
   const [loading, isLoading] = useState(false);
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e) => {
     isLoading(true);
 
     const promise = new Promise((resolve, reject) => {
