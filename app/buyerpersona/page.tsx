@@ -10,7 +10,8 @@ import {
   Title,
   BarList
 } from '@tremor/react';
-import Papa from 'papaparse';
+
+import axios from 'axios';
 import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline';
 import Spinner from './spinner';
 
@@ -20,16 +21,32 @@ export default function PlaygroundPage() {
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    //Si no se subieron archivos termino el proceso
     if (!event.target.files) return;
 
+    //Activo el spinner y cambio el boton a un estado de cargando
     isLoading(true);
-    Papa.parse(event.target.files[0], {
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => {
-        console.log(results.data);
-      }
-    });
+
+    //Guardo el archivo en un formData
+    const formData = new FormData();
+    formData.append('file', event.target.files[0]);
+    formData.append('options', JSON.stringify({ opciones: 'hola' }));
+
+    //Envío el archivo usando axios
+    try {
+      const res = await axios.post('/api/test3', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      //rmprimo en consola la respuesta
+      console.log(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+
+    //Desactivo el spinner
     isLoading(false);
   };
 
