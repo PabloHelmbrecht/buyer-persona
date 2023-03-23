@@ -28,13 +28,15 @@ export default function PlaygroundPage() {
     isLoading(true);
 
     //Guardo el archivo en un formData
+
     const formData = new FormData();
     formData.append('file', event.target.files[0]);
-    formData.append('options', JSON.stringify({ opciones: 'hola' }));
+    console.log(formData.get('file'));
+    //formData.append('options', JSON.stringify({ opciones: 'hola' }));
 
     //Envío el archivo usando axios
     try {
-      const res = await axios.post('/api/test3', formData, {
+      const res = await axios.post('/api/test', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
