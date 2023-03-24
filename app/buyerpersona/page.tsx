@@ -1,6 +1,6 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   Card,
   Metric,
@@ -9,48 +9,54 @@ import {
   ColGrid,
   Title,
   BarList
-} from '@tremor/react';
+} from '@tremor/react'
 
-import axios from 'axios';
-import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline';
-import Spinner from './spinner';
+import axios from 'axios'
+import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline'
+import Spinner from './spinner'
 
 export default function PlaygroundPage() {
-  const [loading, isLoading] = useState(false);
+  const [loading, isLoading] = useState(false)
+  const [file, setFile] = useState<File>()
+  const [limitValuesPerHeader, setLimitValuesPerHeader] = useState<number>(70)
+  const [neighborhoodRadius, setNeighborhoodRadius] = useState<number>(1)
+  const [minPointsPerCluster, setMinPointsPerCluster] = useState<number>(1)
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    //Si no se subieron archivos termino el proceso
-    if (!event.target.files) return;
+  async function buyerPersonaGeneratorCall() {
+
+    //Si
+    if(!((file instanceof File)&&limitValuesPerHeader&&neighborhoodRadius&&minPointsPerCluster)) return
 
     //Activo el spinner y cambio el boton a un estado de cargando
-    isLoading(true);
+    isLoading(true)
 
     //Guardo el archivo en un formData
+    const formData = new FormData()
 
-    const formData = new FormData();
-    formData.append('file', event.target.files[0]);
-    console.log(formData.get('file'));
-    //formData.append('options', JSON.stringify({ opciones: 'hola' }));
+    //Cargo el archivo en el formData
+   formData.append('file', file)
+
+    //Cargo las opciones en el formData
+    formData.append('options', JSON.stringify({
+      limitValuesPerHeader,
+      neighborhoodRadius,
+      minPointsPerCluster
+    }))
+
 
     //Envío el archivo usando axios
-    try {
-      const res = await axios.post('/api/test', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+    const buyerPersonaResponse = await axios.post('/api/test', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 
-      //rmprimo en consola la respuesta
-      console.log(res.data);
-    } catch (error) {
-      console.error(error);
-    }
+    //Imprimo en consola la respuesta
+    console.log(buyerPersonaResponse.data)
 
     //Desactivo el spinner
-    isLoading(false);
-  };
+    isLoading(false)
+  }
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) { setFile(event.target.files[0]) }
+  }
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
@@ -78,5 +84,5 @@ export default function PlaygroundPage() {
         </label>
       </Flex>
     </main>
-  );
+  )
 }

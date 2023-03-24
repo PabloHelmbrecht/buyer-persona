@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import formidable from 'formidable';
 import BuyerPersonaGenerator, {
   BuyerPersonaGeneratorOptions
 } from '../../lib/BuyerPersonaGenerator';
