@@ -1,14 +1,23 @@
 'use client';
 import { Text } from '@tremor/react';
 
+interface InputRangeProps {
+  label: string
+  min:number,
+  max:number,
+  step:number
+  handleRange: React.Dispatch<React.SetStateAction<number>>,
+  value: number
+}
+
 export default function InputRange({
   label = 'label',
   min = 0,
   max = 100,
   step = 1,
   handleRange,
-  value = ''
-}) {
+  value = 0
+}:InputRangeProps) {
   return (
     <div className="pl-6 pr-6">
       <Text>

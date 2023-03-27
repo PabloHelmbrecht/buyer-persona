@@ -78,7 +78,7 @@ export default function PlaygroundPage() {
     if (typeof minPointsPerCluster !== 'number') return;
     isLoading(true);
     buyerPersonaGeneratorCall().then((response) => {
-      console.log(response.data.buyerPersonaData?.length);
+      //console.log(response.data.buyerPersonaData?.length);
       isLoading(false);
     });
   }, [jsonFile, limitValuesPerHeader, neighborhoodRadius, minPointsPerCluster]);
@@ -96,7 +96,7 @@ export default function PlaygroundPage() {
       <Flex
         justifyContent="justify-center"
         marginTop="mt-4"
-        alignItems="center"
+        alignItems="items-center"
       >
         <InputRange
           label="Ajuste"
