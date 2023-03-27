@@ -19,10 +19,10 @@ export default function InputRange({
   value = 0
 }:InputRangeProps) {
   return (
-    <div className="pl-6 pr-6">
+    <div className="flex items-center justify-between w-max gap-4">
       <Text>
         <label htmlFor={label}>
-          {label}: {value}
+          {label}
         </label>
       </Text>
       <input
@@ -40,6 +40,7 @@ export default function InputRange({
           }
         }}
       />
+    <Text> <span className='text-neutral-800 '>{value}</span>  </Text>
     </div>
   );
 }
