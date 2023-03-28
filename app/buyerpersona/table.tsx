@@ -6,8 +6,8 @@ import { attributeBuyerPersonaData } from '../../lib/BuyerPersonaGenerator'
 import { Card, Table, TableHead, TableRow, TableHeaderCell, TableBody, Title } from '@tremor/react'
 
 interface BuyerPersonaTableProps {
-    data: attributeBuyerPersonaData[]
-    csvData: object[]
+    data: attributeBuyerPersonaData[] | undefined
+    csvData: object[] | undefined
 }
 
 function BuyerPersonaTable({ data, csvData }: BuyerPersonaTableProps) {

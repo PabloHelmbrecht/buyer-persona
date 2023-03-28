@@ -19,7 +19,7 @@ export default function PlaygroundPage() {
     const [limitValuesPerHeader, setLimitValuesPerHeader] = useState<number>(70)
     const [neighborhoodRadius, setNeighborhoodRadius] = useState<number>(0.25)
     const [minPointsPerCluster, setMinPointsPerCluster] = useState<number>(20)
-    const [table, setTable] = useState<attributeBuyerPersonaData[]>()
+    const [table, setTable] = useState<attributeBuyerPersonaData[] | undefined>()
     const [csvData, setCSVData] = useState()
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
