@@ -289,8 +289,8 @@ class BuyerPersonaGenerator {
             entriesInCluster.forEach((entryIndex) => {
                 //Creo un objeto dentro de entriesInCluster por cada fila en data y le agrego el índice de cluster
                 this.clusterizedData.push({
-                    cluster: clusterIndex + 1,
-                    distance: distanceToCenter[entryIndex] ?? 0,
+                    'Grupo': clusterIndex + 1,
+                    'Distancia de Centro': distanceToCenter[entryIndex] ?? 0,
                     ...this._data[entryIndex],
                 })
                 clustersWithEntries[clusterIndex] = clustersWithEntries[clusterIndex] ?? []

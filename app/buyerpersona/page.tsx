@@ -1,26 +1,29 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import Papa, { ParseResult } from 'papaparse'
 import axios from 'axios'
 import { Card, Metric, Text, Flex as div, Divider, Title } from '@tremor/react'
 import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline'
 import { Transition } from '@headlessui/react'
+import { Data } from 'react-csv/components/CommonPropTypes'
 
 import Spinner from './spinner'
 import InputRange from './inputRange'
 import InputNumber from './inputNumber'
 import BuyerPersonaTable from './table'
+import ErrorBoundary from '../error-boundary'
 import { BuyerPersonaGeneratorOptions, dataRow, attributeBuyerPersonaData } from '../../lib/BuyerPersonaGenerator'
 
 export default function PlaygroundPage() {
-    const [loading, isLoading] = useState(false)
+    const [loading, isLoading] = useState<boolean>(false)
     const [jsonFile, setJSONFile] = useState<dataRow[]>()
     const [limitValuesPerHeader, setLimitValuesPerHeader] = useState<number>(70)
     const [neighborhoodRadius, setNeighborhoodRadius] = useState<number>(0.25)
     const [minPointsPerCluster, setMinPointsPerCluster] = useState<number>(20)
     const [table, setTable] = useState<attributeBuyerPersonaData[] | undefined>()
-    const [csvData, setCSVData] = useState()
+    const [csvData, setCSVData] = useState<Data>([{test: 1, dato:2},{test: 3, dato:5}])
+    const [loadingTableData, isLoadingTableData] = useState<boolean>(false)
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -42,7 +45,7 @@ export default function PlaygroundPage() {
         }
     }
 
-    useMemo(() => {
+    useEffect(() => {
         async function buyerPersonaGeneratorCall() {
             try {
                 const options: BuyerPersonaGeneratorOptions = {
@@ -69,12 +72,16 @@ export default function PlaygroundPage() {
         if (typeof neighborhoodRadius !== 'number') return
         if (typeof minPointsPerCluster !== 'number') return
         isLoading(true)
+        isLoadingTableData(true)
         buyerPersonaGeneratorCall().then((response: any) => {
-            console.log(response.data)
             setTable(response.data.buyerPersonaData)
-            setCSVData(response.data.clusterizedData)
-            isLoading(false)
+            setCSVData(response.data.tableData)
+            
         })
+        .finally(()=> {
+            isLoading(false)
+            isLoadingTableData(false)
+        } )
     }, [jsonFile, limitValuesPerHeader, neighborhoodRadius, minPointsPerCluster])
 
     return (
@@ -117,7 +124,7 @@ export default function PlaygroundPage() {
                 </label>
             </Transition>
 
-            <div className="w-80">
+            <div className="w-fit">
                 <Card marginTop="mt-8">
                     <Title>Parámetros</Title>
                     <Divider />
@@ -125,14 +132,14 @@ export default function PlaygroundPage() {
                         <InputRange
                             label="Ajuste:"
                             min={0}
-                            max={2}
+                            max={10}
                             step={0.05}
                             handleRange={setNeighborhoodRadius}
                             value={neighborhoodRadius}
                         />
                         <InputNumber
                             handleNumber={setLimitValuesPerHeader}
-                            label="Valores por Columna:"
+                            label="Máximo Valores por Columna:"
                         />
                         <InputRange
                             label="Ruido"
@@ -156,10 +163,13 @@ export default function PlaygroundPage() {
                 leaveTo="-translate-y-4 opacity-0"
                 className="mt-8 w-11/12"
             >
-                <BuyerPersonaTable
-                    data={table}
-                    csvData={csvData}
-                />
+                <ErrorBoundary>
+                    <BuyerPersonaTable
+                        data={table}
+                        csvData={csvData}
+                        loadingTableState={loadingTableData}
+                    />
+                </ErrorBoundary>
             </Transition>
         </main>
     )
