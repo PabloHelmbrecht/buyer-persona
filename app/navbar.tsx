@@ -7,9 +7,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 
 const navigation = [
-    { name: 'Dashboard', href: '/' },
-    { name: 'Playground', href: '/playground' },
-    { name: 'Buyer Persona Generator', href: '/buyerpersona' },
+    { name: 'ICP Generator', href: '/' },
 ]
 
 function classNames(...classes: string[]) {

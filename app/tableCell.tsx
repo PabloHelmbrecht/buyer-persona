@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { TableCell, DonutChart, Text } from '@tremor/react'
-import { attributeNumber, attributeType } from '../../lib/BuyerPersonaGenerator'
+import { attributeNumber, attributeType } from './../lib/BuyerPersonaGenerator'
 import { Transition } from '@headlessui/react'
 import ArrowDownToolTip from './arrow-tooltip'
 

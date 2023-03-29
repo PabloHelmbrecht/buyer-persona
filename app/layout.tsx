@@ -8,7 +8,7 @@ import { Suspense } from 'react'
 import ErrorBoundary from './error-boundary'
 
 export const metadata = {
-    title: 'Buyer Persona Generator',
+    title: 'ICP Generator',
     description:
         'A user admin dashboard configured with Next.js, PlanetScale, NextAuth, Tailwind CSS, TypeScript, ESLint, and Prettier.',
 }

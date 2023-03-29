@@ -19,13 +19,13 @@ export default function InputRange({
     value = 0,
 }: InputRangeProps) {
     return (
-        <div className="flex items-center justify-between w-max gap-4">
+        <div className="flex items-center justify-start w-full gap-4">
             <Text>
                 <label htmlFor={label}>{label}</label>
             </Text>
             <input
                 type="range"
-                className="transparent h-1.5 w-full cursor-pointer appearance-none rounded-lg border-transparent bg-neutral-200"
+                className="transparent h-1.5 w-8/12 cursor-pointer appearance-none rounded-lg border-transparent bg-neutral-200"
                 id={label}
                 min={min}
                 max={max}
