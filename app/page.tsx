@@ -7,6 +7,7 @@ import { Card, Metric, Text, Flex as div, Divider, Title } from '@tremor/react'
 import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline'
 import { Transition } from '@headlessui/react'
 import { Data } from 'react-csv/components/CommonPropTypes'
+import { Tooltip } from 'react-tooltip'
 
 import Spinner from './spinner'
 import InputRange from './inputRange'
@@ -22,12 +23,15 @@ export default function PlaygroundPage() {
     const [neighborhoodRadius, setNeighborhoodRadius] = useState<number>(0.25)
     const [minPointsPerCluster, setMinPointsPerCluster] = useState<number>(20)
     const [table, setTable] = useState<attributeBuyerPersonaData[] | undefined>()
-    const [csvData, setCSVData] = useState<Data>([{test: 1, dato:2},{test: 3, dato:5}])
+    const [csvData, setCSVData] = useState<Data>([
+        { test: 1, dato: 2 },
+        { test: 3, dato: 5 },
+    ])
     const [loadingTableData, isLoadingTableData] = useState<boolean>(false)
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
-            if(event.target.files[0].type !== 'text/csv') return
+            if (event.target.files[0].type !== 'text/csv') return
             console.log(event.target.files[0])
             Papa.parse(event.target.files[0], {
                 delimiter: ',',
@@ -75,15 +79,15 @@ export default function PlaygroundPage() {
         if (typeof minPointsPerCluster !== 'number') return
         isLoading(true)
         isLoadingTableData(true)
-        buyerPersonaGeneratorCall().then((response: any) => {
-            setTable(response.data.buyerPersonaData)
-            setCSVData(response.data.tableData)
-            
-        })
-        .finally(()=> {
-            isLoading(false)
-            isLoadingTableData(false)
-        } )
+        buyerPersonaGeneratorCall()
+            .then((response: any) => {
+                setTable(response.data.buyerPersonaData)
+                setCSVData(response.data.tableData)
+            })
+            .finally(() => {
+                isLoading(false)
+                isLoadingTableData(false)
+            })
     }, [jsonFile, limitValuesPerHeader, neighborhoodRadius, minPointsPerCluster])
 
     return (
@@ -101,6 +105,20 @@ export default function PlaygroundPage() {
                 Haz click en el botón debajo para subir el archivo .CSV
             </Text>
 
+            <Text
+                textAlignment="text-center"
+                marginTop="mt-2"
+            >
+                <a
+                    href="https://www.linkedin.com/in/pablohelm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline text-blue-500 font-semibold"
+                >
+                    Creado por Pablo Helmbrecht
+                </a>
+            </Text>
+
             <Transition
                 show={table === undefined}
                 enter="transition ease-out duration-300 delay-200"
@@ -109,7 +127,7 @@ export default function PlaygroundPage() {
                 leave="transition ease-in duration-300"
                 leaveFrom="translate-y-0 opacity-100"
                 leaveTo="-translate-y-4 opacity-0"
-                className="mt-8"
+                className="mt-6"
             >
                 <label
                     htmlFor="file-upload"
@@ -122,7 +140,7 @@ export default function PlaygroundPage() {
                         style={{ display: 'none' }}
                         onInput={handleFileChange}
                         type="file"
-                        accept='.csv'
+                        accept=".csv"
                     />
                 </label>
             </Transition>
