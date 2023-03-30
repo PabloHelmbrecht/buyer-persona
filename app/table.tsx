@@ -21,13 +21,19 @@ function BuyerPersonaTable({ data, csvData, loadingTableState }: BuyerPersonaTab
     return (
         <Card maxWidth="max-w-full">
             <div className="flex justify-between items-start mb-2 overflow-hidden">
-
-                <div className='flex items-center justify-center justify-items-center content-center gap-2'>
+                <div className="flex items-center justify-center justify-items-center content-center gap-2">
                     <Title>Lista de Segmentaciones Generadas: </Title>
-                    {loadingTableState ? <SkeletonText className='h-5 w-10 rounded-sm' /> : <Title>{data.length}</Title>}
+                    {loadingTableState ? (
+                        <SkeletonText className="h-5 w-10 rounded-sm" />
+                    ) : (
+                        <Title>{data.length}</Title>
+                    )}
                 </div>
                 <ErrorBoundary>
-                    <CSVLink data={csvData} filename={'datos_segmentados.csv'}>
+                    <CSVLink
+                        data={csvData}
+                        filename={'datos_segmentados.csv'}
+                    >
                         <div className="bg-blue-500 hover:bg-blue-600 flex justify-center content-center items-center rounded-md aspect-square h-8">
                             <InboxArrowDownIcon className="h-5 w-5 text-white" />
                         </div>
@@ -38,7 +44,10 @@ function BuyerPersonaTable({ data, csvData, loadingTableState }: BuyerPersonaTab
                 <TableHead>
                     <TableRow>
                         {Object.keys(data[0]).map((header) => (
-                            <TableHeaderCell textAlignment='text-center' key={header}>
+                            <TableHeaderCell
+                                textAlignment="text-center"
+                                key={header}
+                            >
                                 {header.charAt(0).toUpperCase() + header.slice(1)}
                             </TableHeaderCell>
                         ))}
@@ -50,17 +59,16 @@ function BuyerPersonaTable({ data, csvData, loadingTableState }: BuyerPersonaTab
                             {Object.keys(entry).map((entryField: any, fieldIndex) => {
                                 if (loadingTableState) {
                                     return (
-                                        <TableCell
-                                            key={fieldIndex}
-                                        ><SkeletonText className='h-5 w-full rounded-sm' /></TableCell>
+                                        <TableCell key={fieldIndex}>
+                                            <SkeletonText className="h-5 w-full rounded-sm" />
+                                        </TableCell>
                                     )
-                                }
-                                else {
+                                } else {
                                     return (
                                         <CustomTableCell
                                             key={fieldIndex}
                                             cellData={entry[entryField]}
-                                            rowIndex={entryIndex+1}
+                                            rowIndex={entryIndex + 1}
                                         />
                                     )
                                 }

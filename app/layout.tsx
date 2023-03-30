@@ -3,7 +3,6 @@ import '@tremor/react/dist/esm/tremor.css'
 
 import Nav from './nav'
 import AnalyticsWrapper from './analytics'
-import Toast from './toast'
 import { Suspense } from 'react'
 import ErrorBoundary from './error-boundary'
 
@@ -26,7 +25,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 </Suspense>
                 <ErrorBoundary>{children}</ErrorBoundary>
                 <AnalyticsWrapper />
-                <Toast />
             </body>
         </html>
     )
